@@ -1,0 +1,14 @@
+add -> commit -> push
+
+tracked , untracked
+
+staged , unstaged
+
+git init
+git add a.txt
+git commit -m "메시지 입력" a.txt
+
+git remote add origin https://github.com/gbox3d/cs2018.git
+git push -u origin master
+
+git push
