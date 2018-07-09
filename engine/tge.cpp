@@ -73,6 +73,21 @@ namespace TGE {
 		}
 
 	}
+	//토큰 만들기 
+	int doTokenize(char *szBuf, char szBufToken[8][16])
+	{
+		char *szpTemp;
+		char *pNextToken = NULL;
+		const char *pszDelimiter = " ";
+		szpTemp = strtok_s(szBuf, pszDelimiter, &pNextToken);
+		int _nTokenIndex = 0;
+		while (szpTemp != NULL) {
+			strcpy_s(szBufToken[_nTokenIndex], 16, szpTemp);
+			_nTokenIndex++;
+			szpTemp = strtok_s(NULL, pszDelimiter, &pNextToken);
+		}
+		return _nTokenIndex;
+	}
 
 
 }

@@ -11,5 +11,8 @@ namespace TGE {
 	void drawLineV(int _x, int _y, int _nLength, WCHAR code, WORD attr);
 
 	extern CHAR_INFO g_chiBuffer[];
+
+	//유틸리티
+	int doTokenize(char *szBuf, char szBufToken[8][16]);
 }
 
