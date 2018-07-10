@@ -11,3 +11,6 @@ struct S_TGE_MAPTOOL
 
 void initMapTool(S_TGE_MAPTOOL *pObj);
 int parseCmd(S_TGE_MAPTOOL *pObj, char *szCmdBuf);
+
+
+

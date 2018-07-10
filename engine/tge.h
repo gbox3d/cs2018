@@ -15,5 +15,11 @@ namespace TGE {
 
 	//蜡瓶府萍
 	int doTokenize(char *szBuf, char szBufToken[8][16]);
+
+	//颇老贸府 
+	int loadBufferBinary(CHAR_INFO *pBuf, const char *szFileName);
+	int saveBufferBinary(CHAR_INFO *pBuf, const char *szFileName);
+
+
 }
 

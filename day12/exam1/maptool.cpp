@@ -65,18 +65,11 @@ int parseCmd(char *szCmdBuf)
 		g_wCurrentBrushAttr = _attr;
 	}
 	else if (!strcmp(szTokenBuf[0], "saveb")) {
-		FILE *fp;
-		fopen_s(&fp,szTokenBuf[1], "w");
-		fwrite(TGE::g_chiBuffer, 2000 * sizeof(CHAR_INFO), 1, fp);
-		fclose(fp);
+		TGE::saveBufferBinary(TGE::g_chiBuffer, szTokenBuf[1]);
 	}
 	else if (!strcmp(szTokenBuf[0], "loadb")) {
-		FILE *fp;
-		fopen_s(&fp, szTokenBuf[1], "r");
-		fread_s(TGE::g_chiBuffer,2000 * sizeof(CHAR_INFO), sizeof(CHAR_INFO), 2000, fp);
-		fclose(fp);
+		TGE::loadBufferBinary( TGE::g_chiBuffer, szTokenBuf[1]);
 	}
-
 
 	return 1;
 }

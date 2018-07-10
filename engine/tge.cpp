@@ -94,5 +94,25 @@ namespace TGE {
 		return _nTokenIndex;
 	}
 
+	int loadBufferBinary(CHAR_INFO *pBuf, const char *szFileName) 
+	{
+		FILE *fp;
+		fopen_s(&fp, szFileName, "r");
+		fread_s(pBuf, SCREEN_BUF_SIZE * sizeof(CHAR_INFO), sizeof(CHAR_INFO), SCREEN_BUF_SIZE, fp);
+		fclose(fp);
+
+		return 0;
+	}
+	
+	int saveBufferBinary(CHAR_INFO *pBuf, const char *szFileName) 
+	{
+		FILE *fp;
+		fopen_s(&fp, szFileName, "w");
+		fwrite(pBuf, SCREEN_BUF_SIZE * sizeof(CHAR_INFO), 1, fp);
+		fclose(fp);
+
+		return 0;
+	}
+
 
 }
