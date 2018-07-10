@@ -7,9 +7,6 @@ COORD g_cdCurrentCursorPos;
 WCHAR g_wcCurrentBrushCode;
 WORD g_wCurrentBrushAttr;
 
-COORD _oldPos = { -1,-1 };
-WCHAR _oldCode = -1;
-WORD _oldAttr = -1;
 
 void initMapTool() 
 {
