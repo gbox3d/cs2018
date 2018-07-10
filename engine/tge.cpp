@@ -23,6 +23,11 @@ namespace TGE {
 		pBuf[(80 * y) + x].Attributes = attr;
 	}
 
+	CHAR_INFO *getCharacter(CHAR_INFO *pBuf, int x, int y)
+	{
+		return &(pBuf[(80 * y) + x]);
+	}
+
 	void clearScreenBuffer( WCHAR _wCode, WORD _wAttr)
 	{
 		CHAR_INFO *pBuf = TGE::g_chiBuffer;
