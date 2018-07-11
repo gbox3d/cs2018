@@ -27,6 +27,8 @@ namespace TGE {
 	int loadBufferBinary(CHAR_INFO *pBuf, const char *szFileName);
 	int saveBufferBinary(CHAR_INFO *pBuf, const char *szFileName);
 
+	CHAR_INFO *CreateScreenBuffer();
+
 
 }
 

@@ -113,5 +113,10 @@ namespace TGE {
 		return 0;
 	}
 
+	CHAR_INFO *CreateScreenBuffer()
+	{
+		return (CHAR_INFO *)malloc(sizeof(CHAR_INFO) * SCREEN_BUF_SIZE);
+	}
+
 
 }
