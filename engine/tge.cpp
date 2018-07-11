@@ -1,8 +1,7 @@
 #include "stdafx.h"
 
 //80x25 = 2000
-#define SCREEN_BUF_SIZE 2000
-#define SCREEN_WIDTH 80
+#include "tge.h"
 
 namespace TGE {
 
@@ -79,7 +78,7 @@ namespace TGE {
 
 	}
 	//토큰 만들기 
-	int doTokenize(char *szBuf, char szBufToken[8][16])
+	int doTokenize(char *szBuf, char szBufToken[8][MAX_TOKEN_SIZE])
 	{
 		char *szpTemp;
 		char *pNextToken = NULL;
@@ -87,7 +86,7 @@ namespace TGE {
 		szpTemp = strtok_s(szBuf, pszDelimiter, &pNextToken);
 		int _nTokenIndex = 0;
 		while (szpTemp != NULL) {
-			strcpy_s(szBufToken[_nTokenIndex], 16, szpTemp);
+			strcpy_s(szBufToken[_nTokenIndex], sizeof(szBufToken[_nTokenIndex]) , szpTemp);
 			_nTokenIndex++;
 			szpTemp = strtok_s(NULL, pszDelimiter, &pNextToken);
 		}
