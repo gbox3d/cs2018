@@ -23,10 +23,35 @@ namespace tge_sprite {
 
 	int load(S_SPRITE_OBJECT *pObj, const char *szFileName)
 	{
+		FILE *fp;
+		fopen_s(&fp, szFileName, "r");
+
+		fread(&(pObj->m_header), sizeof(S_SPRITE_HEADER), 1, fp);
+
+		if (pObj->m_pSpriteBuf != NULL) { free(pObj->m_pSpriteBuf); }
+
+		int _nBuffSize = pObj->m_header.m_cdWorkSpr.X*pObj->m_header.m_cdWorkSpr.Y * sizeof(CHAR_INFO);
+
+		pObj->m_pSpriteBuf = (CHAR_INFO *)malloc( _nBuffSize );
+		fread(pObj->m_pSpriteBuf,
+			_nBuffSize, 1,
+			fp);
+
+		fclose(fp);
+
 		return 0;
 	}
 	int save(S_SPRITE_OBJECT *pObj, const char *szFileName)
 	{
+		FILE *fp;
+		fopen_s(&fp, szFileName, "w");
+
+		fwrite(&(pObj->m_header), sizeof(S_SPRITE_HEADER), 1, fp);		
+		fwrite(pObj->m_pSpriteBuf, 
+			sizeof(CHAR_INFO),pObj->m_header.m_cdWorkSpr.X*pObj->m_header.m_cdWorkSpr.Y,
+			 fp);
+
+		fclose(fp);
 
 		return 0;
 	}
@@ -148,6 +173,12 @@ int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 		int _xpos = atoi(szTokenBuf[1]);
 		int _ypos = atoi(szTokenBuf[2]);
 		tge_sprite::put(&g_WorkSprObject,_xpos,_ypos);
+	}
+	else if (!strcmp(szTokenBuf[0], "saveSprite")) {
+		tge_sprite::save(&g_WorkSprObject, szTokenBuf[1]);
+	}
+	else if (!strcmp(szTokenBuf[0], "loadSprite")) {
+		tge_sprite::load(&g_WorkSprObject, szTokenBuf[1]);
 	}
 
 
