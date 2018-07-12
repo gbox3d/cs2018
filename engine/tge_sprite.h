@@ -15,6 +15,7 @@ namespace tge_sprite {
 	int load(S_SPRITE_OBJECT *pObj, const char *szFileName);
 	int save(S_SPRITE_OBJECT *pObj, const char *szFileName);
 	int put(S_SPRITE_OBJECT *pObj, int posx, int posy);
+	int put(S_SPRITE_OBJECT *pObj, int posx, int posy, CHAR_INFO *pDestScreenBuf);
 	int get(S_SPRITE_OBJECT *pObj, int _xpos, int _ypos, int _width, int _height);
 
 }
