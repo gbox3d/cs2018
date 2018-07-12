@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{2DB3F9F4-66F2-4486-BAD8-4AC0D2323EBA}</ProjectGuid>
+    <ProjectGuid>{1485098D-35B8-4807-AB48-4D48CD8715CF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>gameEditor</RootNamespace>
+    <RootNamespace>exam3</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,17 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\engine\tge.h" />
-    <ClInclude Include="..\..\engine\tge_sprite.h" />
-    <ClInclude Include="maptool.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\engine\tge.cpp" />
-    <ClCompile Include="..\..\engine\tge_sprite.cpp" />
-    <ClCompile Include="gameEditor.cpp" />
-    <ClCompile Include="maptool.cpp" />
+    <ClCompile Include="exam3.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
