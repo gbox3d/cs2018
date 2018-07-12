@@ -3,6 +3,8 @@
 https://drive.google.com/open?id=0B2SIfUvbN7xEZUd1ZG44T2dmNFE
 
 
+tge 엔진용 스켈로톤 코드입니다.</br>
+복붙하세요.
 ```c
 //TGE skeleton 
 #include "stdafx.h"
@@ -17,6 +19,7 @@ int main()
 	GetConsoleMode(hStdin, &fdwOldMode);
 	SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
 
+	TGE::clearScreenBuffer(0x20, 0x0090);
 	//TGE::loadBufferBinary(TGE::g_chiBuffer, "../../pub_res/1.map");
 	//g_cdPlayerPos.X = 15;
 	//g_cdPlayerPos.Y = 5;
@@ -65,19 +68,19 @@ int main()
 				if (!strcmp(szTokenBuf[0], "quit")) {
 					_bLoop = false;
 				}
-				
+
 			}
 			szCmdBuf[0] = 0x00;
 		}
 
-		
+
 		//랜더 (화면 갱신)
 		TGE::updateBuffer(hStdout, TGE::g_chiBuffer);
 	}
 
-	SetConsoleMode(hStdin, &fdwOldMode);
+	SetConsoleMode(hStdin, fdwOldMode);
 
-    return 0;
+	return 0;
 }
 
 ```
