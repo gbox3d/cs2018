@@ -3,8 +3,61 @@
 #include "../../engine/tge.h"
 #include "maptool.h"
 
-COORD g_cdWorkSpr;
-CHAR_INFO *g_pSpriteBuf;
+namespace tge_sprite {
+
+	struct S_SPRITE_HEADER {
+		char szHeader[16];
+		COORD m_cdWorkSpr;
+	};
+
+	struct S_SPRITE_OBJECT {
+		S_SPRITE_HEADER m_header;
+		CHAR_INFO *m_pSpriteBuf;
+	};
+
+	void Init(S_SPRITE_OBJECT *pObj) {
+		pObj->m_header.m_cdWorkSpr = { 0,0 };
+		strcpy_s(pObj->m_header.szHeader, sizeof(pObj->m_header.szHeader), "TGESPR");
+		pObj->m_pSpriteBuf = NULL;
+	}
+
+	int load(S_SPRITE_OBJECT *pObj, const char *szFileName)
+	{
+		return 0;
+	}
+	int save(S_SPRITE_OBJECT *pObj, const char *szFileName)
+	{
+
+		return 0;
+	}
+	int put(S_SPRITE_OBJECT *pObj,int posx,int posy)
+	{
+		TGE::putSprite(posx, posy, 
+			pObj->m_header.m_cdWorkSpr.X, 
+			pObj->m_header.m_cdWorkSpr.Y, TGE::g_chiBuffer, pObj->m_pSpriteBuf);
+		return 0;
+
+	}
+	int get(S_SPRITE_OBJECT *pObj, int _xpos, int _ypos,int _width,int _height)
+	{
+		if (pObj->m_pSpriteBuf != NULL) { free(pObj->m_pSpriteBuf); }
+		pObj->m_pSpriteBuf = (CHAR_INFO *)malloc(sizeof(CHAR_INFO) * (_width*_height));
+		pObj->m_header.m_cdWorkSpr = { (SHORT)_width , (SHORT)_height };
+
+		int _desx, _desy;
+
+		for (_desy = 0; _desy < _height; _desy++) {
+			for (_desx = 0; _desx < _width; _desx++) {
+				pObj->m_pSpriteBuf[_desx + (_desy*_width)] =
+					TGE::g_chiBuffer[(_desx + _xpos) + ((_desy + _ypos) *SCREEN_WIDTH)];
+			}
+		}
+		return 0;
+	}
+
+}
+
+tge_sprite:: S_SPRITE_OBJECT g_WorkSprObject;
 
 void initMapTool(S_TGE_MAPTOOL *pObj)
 {
@@ -13,8 +66,8 @@ void initMapTool(S_TGE_MAPTOOL *pObj)
 	pObj->m_wcCurrentBrushCode = 0x20;
 	pObj->m_CurrentBrushAttr = 0x00e0;
 
-	g_cdWorkSpr = { 0,0 };
-	g_pSpriteBuf = NULL;
+	tge_sprite::Init(&g_WorkSprObject);
+	
 }
 
 int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
@@ -87,26 +140,14 @@ int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 		int _width = atoi(szTokenBuf[3]);
 		int _height = atoi(szTokenBuf[4]);
 
-		if (g_pSpriteBuf != NULL) {
-			free(g_pSpriteBuf);
-			g_pSpriteBuf = NULL;
-		}
-		g_pSpriteBuf = (CHAR_INFO *)malloc( sizeof(CHAR_INFO) * (_width*_height) );
-		g_cdWorkSpr = { (SHORT)_width , (SHORT)_height };
+		tge_sprite::get(&g_WorkSprObject,_xpos,_ypos,_width,_height);
 
-		int _desx, _desy;
 
-		for (_desy = 0; _desy < _height; _desy++) {
-			for (_desx = 0; _desx < _width; _desx++) {
-				g_pSpriteBuf[_desx + (_desy*_width)] = 
-					TGE::g_chiBuffer[(_desx + _xpos) + ( (_desy+_ypos) *SCREEN_WIDTH)];
-			}
-		}
 	}
 	else if (!strcmp(szTokenBuf[0], "putSprite")) {
-		if (g_pSpriteBuf != NULL) {
-			TGE::putSprite(40, 15, g_cdWorkSpr.X, g_cdWorkSpr.Y, TGE::g_chiBuffer, g_pSpriteBuf);
-		}
+		int _xpos = atoi(szTokenBuf[1]);
+		int _ypos = atoi(szTokenBuf[2]);
+		tge_sprite::put(&g_WorkSprObject,_xpos,_ypos);
 	}
 
 
