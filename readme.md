@@ -75,6 +75,8 @@ int main()
 		TGE::updateBuffer(hStdout, TGE::g_chiBuffer);
 	}
 
+	SetConsoleMode(hStdin, &fdwOldMode);
+
     return 0;
 }
 
