@@ -118,5 +118,29 @@ namespace TGE {
 		return (CHAR_INFO *)malloc(sizeof(CHAR_INFO) * SCREEN_BUF_SIZE);
 	}
 
+	//스프라이트
+
+	void putSprite(int posx, int posy, int destw, int desth, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc)
+	{
+
+		int _x;
+		int _y;
+		_x = posx; //출력 위치 
+		_y = posx;
+		int src_buf_size = srcw * srch;
+		int nStep = 0;
+		int _i = 0;
+		for (int i = 0; i < src_buf_size; i++) {
+			nStep = i / srcw;
+			pDest[_i + (nStep * SCREEN_WIDTH) + (_y*SCREEN_WIDTH + _x)] = pSrc[i];
+			_i++;
+			_i %= srcw;
+		}
+	}
+	void putSprite(int posx, int posy, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc)
+	{
+		putSprite(posx, posy, SCREEN_WIDTH, 25, srcw, srch, pDest, pSrc);
+	}
+
 
 }

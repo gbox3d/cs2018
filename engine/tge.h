@@ -29,6 +29,10 @@ namespace TGE {
 
 	CHAR_INFO *CreateScreenBuffer();
 
+	//스프라이트
+	void putSprite(int posx, int posy, int destw, int desth, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc);
+	void putSprite(int posx, int posy, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc);
+
 
 }
 
