@@ -17,9 +17,9 @@ int main()
 	GetConsoleMode(hStdin, &fdwOldMode);
 	SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
 
-	TGE::loadBufferBinary(TGE::g_chiBuffer, "../../pub_res/1.map");
-	g_cdPlayerPos.X = 15;
-	g_cdPlayerPos.Y = 5;
+	//TGE::loadBufferBinary(TGE::g_chiBuffer, "../../pub_res/1.map");
+	//g_cdPlayerPos.X = 15;
+	//g_cdPlayerPos.Y = 5;
 
 	bool _bLoop = true;
 	static int _nFSM = 0;
