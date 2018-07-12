@@ -3,7 +3,7 @@
 #include "../../engine/tge.h"
 #include "maptool.h"
 
-COORD g_cdWorkWpr;
+COORD g_cdWorkSpr;
 CHAR_INFO *g_pSpriteBuf;
 
 void initMapTool(S_TGE_MAPTOOL *pObj)
@@ -13,7 +13,7 @@ void initMapTool(S_TGE_MAPTOOL *pObj)
 	pObj->m_wcCurrentBrushCode = 0x20;
 	pObj->m_CurrentBrushAttr = 0x00e0;
 
-	g_cdWorkWpr = { 0,0 };
+	g_cdWorkSpr = { 0,0 };
 	g_pSpriteBuf = NULL;
 }
 
@@ -82,7 +82,31 @@ int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 		TGE::loadBufferBinary(TGE::g_chiBuffer, szTokenBuf[1]);
 	}
 	else if (!strcmp(szTokenBuf[0], "getSprite")) {
+		int _xpos = atoi(szTokenBuf[1]);
+		int _ypos = atoi(szTokenBuf[2]);
+		int _width = atoi(szTokenBuf[3]);
+		int _height = atoi(szTokenBuf[4]);
 
+		if (g_pSpriteBuf != NULL) {
+			free(g_pSpriteBuf);
+			g_pSpriteBuf = NULL;
+		}
+		g_pSpriteBuf = (CHAR_INFO *)malloc( sizeof(CHAR_INFO) * (_width*_height) );
+		g_cdWorkSpr = { (SHORT)_width , (SHORT)_height };
+
+		int _desx, _desy;
+
+		for (_desy = 0; _desy < _height; _desy++) {
+			for (_desx = 0; _desx < _width; _desx++) {
+				g_pSpriteBuf[_desx + (_desy*_width)] = 
+					TGE::g_chiBuffer[(_desx + _xpos) + ( (_desy+_ypos) *SCREEN_WIDTH)];
+			}
+		}
+	}
+	else if (!strcmp(szTokenBuf[0], "putSprite")) {
+		if (g_pSpriteBuf != NULL) {
+			TGE::putSprite(40, 15, g_cdWorkSpr.X, g_cdWorkSpr.Y, TGE::g_chiBuffer, g_pSpriteBuf);
+		}
 	}
 
 

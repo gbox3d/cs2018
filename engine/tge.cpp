@@ -126,7 +126,7 @@ namespace TGE {
 		int _x;
 		int _y;
 		_x = posx; //출력 위치 
-		_y = posx;
+		_y = posy;
 		int src_buf_size = srcw * srch;
 		int nStep = 0;
 		int _i = 0;
