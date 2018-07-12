@@ -3,6 +3,8 @@
 #include "../../engine/tge.h"
 #include "maptool.h"
 
+COORD g_cdWorkWpr;
+CHAR_INFO *g_pSpriteBuf;
 
 void initMapTool(S_TGE_MAPTOOL *pObj)
 {
@@ -10,6 +12,9 @@ void initMapTool(S_TGE_MAPTOOL *pObj)
 	pObj->m_cdCurrentCursorPos.Y = 12;
 	pObj->m_wcCurrentBrushCode = 0x20;
 	pObj->m_CurrentBrushAttr = 0x00e0;
+
+	g_cdWorkWpr = { 0,0 };
+	g_pSpriteBuf = NULL;
 }
 
 int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
@@ -75,6 +80,9 @@ int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 	}
 	else if (!strcmp(szTokenBuf[0], "loadb")) {
 		TGE::loadBufferBinary(TGE::g_chiBuffer, szTokenBuf[1]);
+	}
+	else if (!strcmp(szTokenBuf[0], "getSprite")) {
+
 	}
 
 
