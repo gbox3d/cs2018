@@ -142,5 +142,49 @@ namespace TGE {
 		putSprite(posx, posy, SCREEN_WIDTH, 25, srcw, srch, pDest, pSrc);
 	}
 
+	namespace input {
+		char g_KeyTable[1024];
+
+		DWORD WINAPI MyThreadFunction(LPVOID lpParam)
+		{
+			HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+			DWORD _oldInputMode;
+			DWORD _NumRead;
+			INPUT_RECORD irInBuf[128];
+
+			GetConsoleMode(hStdin, &_oldInputMode);
+			SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
+			
+			while (1) {
+				ReadConsoleInput(hStdin, irInBuf, 128, &_NumRead);
+				for (DWORD i = 0; i < _NumRead; i++) {
+					if (irInBuf[i].EventType == KEY_EVENT) {
+						if (irInBuf[i].Event.KeyEvent.bKeyDown) {
+							g_KeyTable[irInBuf[i].Event.KeyEvent.wVirtualKeyCode] = 1;
+						}
+						else {
+							g_KeyTable[irInBuf[i].Event.KeyEvent.wVirtualKeyCode] = 0;
+						}
+					}
+				}
+				Sleep(1);
+			}
+			SetConsoleMode(hStdin, _oldInputMode);
+			return 0;
+		}
+
+	}
+	DWORD dwThreadId_ReadInput;
+	HANDLE hThread_ReadInput;
+
+	void startTGE() {
+		hThread_ReadInput = CreateThread(
+			NULL, 0, input::MyThreadFunction, NULL, 0, &dwThreadId_ReadInput
+		);
+	}
+	void endTGE() {
+
+	}
+
 
 }

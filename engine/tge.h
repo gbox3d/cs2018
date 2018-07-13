@@ -17,7 +17,7 @@ namespace TGE {
 	void drawLineV(int _x, int _y, int _nLength, WCHAR code, WORD attr);
 
 	extern CHAR_INFO g_chiBuffer[];
-
+	
 
 
 	//유틸리티
@@ -33,6 +33,11 @@ namespace TGE {
 	void putSprite(int posx, int posy, int destw, int desth, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc);
 	void putSprite(int posx, int posy, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc);
 
+	namespace input {
+		extern char g_KeyTable[1024];
+	}
+	void startTGE();
+	void endTGE();
 
 }
 
