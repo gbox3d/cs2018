@@ -9,45 +9,42 @@ tge 엔진용 스켈로톤 코드입니다.</br>
 //TGE skeleton 
 #include "stdafx.h"
 #include "../../engine/tge.h"
-
+//#include "gameobject.h"
 int main()
 {
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 
-	DWORD fdwOldMode;
-	GetConsoleMode(hStdin, &fdwOldMode);
-	SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
+	HANDLE hStdout = NULL;
+	TGE::startTGE(&hStdout);
 
-	TGE::clearScreenBuffer(0x20, 0x0090);
-	//TGE::loadBufferBinary(TGE::g_chiBuffer, "../../pub_res/1.map");
-	//g_cdPlayerPos.X = 15;
-	//g_cdPlayerPos.Y = 5;
+	/*cs2018prj::S_GAMEOBJECT testObj;
+	CHAR_INFO _chr;
+	_chr.Attributes = 0x00f0;
+	_chr.Char.UnicodeChar = 0x20;
+	cs2018prj::Init(&testObj, 40, 12,3.5, _chr);*/
+	
+	CHAR_INFO *pBakBuffer = TGE::CreateScreenBuffer();
 
 	bool _bLoop = true;
 	static int _nFSM = 0;
-	while (_bLoop)
-	{
-		static char szCmdBuf[128];
+	UINT64 _oldTick = TGE::util::GetTimeMs64();
 
+	while (_bLoop)
+	{	
+		UINT64 _curTick = TGE::util::GetTimeMs64();
+		UINT64 _deltaTick = _curTick - _oldTick;
+		_oldTick = _curTick;
+
+		double _dbDeltaTick = (double)(_deltaTick) / 1000.0;
+
+		//SetConsoleCursorPosition(hStdout,{ 40, 1 });
+
+		static char szCmdBuf[128];
 		//입력 처리 
 		switch (_nFSM) {
-		case 0: //비동기 모드
-			static DWORD cNumRead;
-			static INPUT_RECORD irInputBuf[128];
-			ReadConsoleInput(hStdin, irInputBuf, 128, &cNumRead);
-
-			for (DWORD i = 0; i < cNumRead; i++) {
-				if (irInputBuf[i].EventType == KEY_EVENT) {
-					if (irInputBuf[i].Event.KeyEvent.bKeyDown) {
-						switch (irInputBuf[i].Event.KeyEvent.wVirtualKeyCode) {
-						case VK_RETURN: //커멘드 입력 모드 전환 
-							_nFSM = 1;
-							SetConsoleMode(hStdin, fdwOldMode);
-							break;
-						}
-					}
-				}
+		case 0:
+			if (TGE::input::g_KeyTable[VK_RETURN]) {
+				_nFSM = 1;
+				TGE::input::setEditMode();
 			}
 			break;
 		case 1: //동기  모드
@@ -58,7 +55,7 @@ int main()
 			printf_s("[cmd >");
 			gets_s(szCmdBuf, sizeof(szCmdBuf));
 			_nFSM = 0;
-			SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
+			TGE::input::setNormalMode();
 			break;
 		}
 		//커멘드 처리..
@@ -68,19 +65,27 @@ int main()
 				if (!strcmp(szTokenBuf[0], "quit")) {
 					_bLoop = false;
 				}
-
 			}
 			szCmdBuf[0] = 0x00;
 		}
 
+		//ai
+		//cs2018prj::Apply(&testObj, _dbDeltaTick);
+
+		//랜더링 전처리
+		TGE::clearScreenBuffer(pBakBuffer, 0x20, 0x0007);
+		//cs2018prj::Render(&testObj, pBakBuffer);
 
 		//랜더 (화면 갱신)
+		TGE::copyScreenBuffer(TGE::g_chiBuffer, pBakBuffer);
 		TGE::updateBuffer(hStdout, TGE::g_chiBuffer);
 	}
 
-	SetConsoleMode(hStdin, fdwOldMode);
+	free(pBakBuffer);
+	TGE::endTGE();
 
 	return 0;
+
 }
 
 ```
