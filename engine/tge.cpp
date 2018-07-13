@@ -155,6 +155,7 @@ namespace TGE {
 		char g_KeyTable[1024];
 		DWORD _oldInputMode;
 		HANDLE hStdin;
+		COORD g_cdMousePos;
 
 		DWORD WINAPI MyThreadFunction(LPVOID lpParam)
 		{
@@ -175,6 +176,13 @@ namespace TGE {
 						else {
 							g_KeyTable[irInBuf[i].Event.KeyEvent.wVirtualKeyCode] = 0;
 						}
+					}
+					else if (irInBuf[i].EventType == MOUSE_EVENT) {
+						
+						g_cdMousePos = {
+							irInBuf[i].Event.MouseEvent.dwMousePosition.X,
+							irInBuf[i].Event.MouseEvent.dwMousePosition.Y
+						};
 					}
 				}
 				Sleep(1);

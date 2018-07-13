@@ -39,6 +39,7 @@ namespace TGE {
 
 	namespace input {
 		extern char g_KeyTable[1024];
+		extern COORD g_cdMousePos;
 		void setNormalMode();
 		void setEditMode();
 	}
