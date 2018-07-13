@@ -22,6 +22,9 @@ namespace TGE {
 
 
 	//蜡瓶府萍
+	namespace util {
+		UINT64 GetTimeMs64();
+	}
 	int doTokenize(char *szBuf, char szBufToken[8][MAX_TOKEN_SIZE]);
 
 	//颇老贸府 

@@ -210,5 +210,25 @@ namespace TGE {
 
 	}
 
+	namespace util {
+
+		UINT64 GetTimeMs64()
+		{
+			FILETIME ft;
+			LARGE_INTEGER li;
+
+			GetSystemTimeAsFileTime(&ft);
+			li.LowPart = ft.dwLowDateTime;
+			li.HighPart = ft.dwHighDateTime;
+
+			UINT64 ret_value = li.QuadPart;
+			ret_value -= 116444736000000000LL;
+			ret_value /= 10000;
+
+			return ret_value;
+
+		}
+	}
+
 
 }
