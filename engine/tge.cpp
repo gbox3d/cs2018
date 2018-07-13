@@ -30,11 +30,20 @@ namespace TGE {
 	void clearScreenBuffer( WCHAR _wCode, WORD _wAttr)
 	{
 		CHAR_INFO *pBuf = TGE::g_chiBuffer;
-
+		clearScreenBuffer(pBuf,_wCode,_wAttr);
+	}
+	void clearScreenBuffer(CHAR_INFO *pBuf,WCHAR _wCode, WORD _wAttr)
+	{
 		for (int i = 0; i < SCREEN_BUF_SIZE; i++) {
 			pBuf[i].Char.UnicodeChar = _wCode;//9673;//9678
 			pBuf[i].Attributes = _wAttr;//0x009f;
 		}
+	}
+
+	void copyScreenBuffer(CHAR_INFO *pBufdest, CHAR_INFO *pBufsrc)
+	{
+		memcpy_s(pBufdest,SCREEN_BUF_SIZE * sizeof(CHAR_INFO) ,
+			pBufsrc, SCREEN_BUF_SIZE * sizeof(CHAR_INFO));
 	}
 
 	void updateBuffer(HANDLE handle, CHAR_INFO *pBuf)
