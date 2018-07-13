@@ -35,9 +35,12 @@ namespace TGE {
 
 	namespace input {
 		extern char g_KeyTable[1024];
+		void setNormalMode();
+		void setEditMode();
 	}
-	void startTGE();
+	void startTGE(HANDLE *phStdout);
 	void endTGE();
+	
 
 }
 

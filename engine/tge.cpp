@@ -144,11 +144,12 @@ namespace TGE {
 
 	namespace input {
 		char g_KeyTable[1024];
+		DWORD _oldInputMode;
+		HANDLE hStdin;
 
 		DWORD WINAPI MyThreadFunction(LPVOID lpParam)
 		{
-			HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
-			DWORD _oldInputMode;
+			hStdin = GetStdHandle(STD_INPUT_HANDLE);
 			DWORD _NumRead;
 			INPUT_RECORD irInBuf[128];
 
@@ -173,11 +174,25 @@ namespace TGE {
 			return 0;
 		}
 
+		void setEditMode()
+		{
+			SetConsoleMode(hStdin, _oldInputMode);
+		}
+		void setNormalMode()
+		{
+			SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
+		}
+
 	}
 	DWORD dwThreadId_ReadInput;
 	HANDLE hThread_ReadInput;
 
-	void startTGE() {
+	void startTGE(HANDLE *phStdout) {
+		
+		*phStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+		TGE::clearScreenBuffer(0x20, 0x0090);
+
 		hThread_ReadInput = CreateThread(
 			NULL, 0, input::MyThreadFunction, NULL, 0, &dwThreadId_ReadInput
 		);
