@@ -14,6 +14,19 @@ namespace cs2018prj {
 
 	void Apply(S_GAMEOBJECT *pObj, double _deltaTick)
 	{
+		if (TGE::input::g_KeyTable[VK_RIGHT]) {
+			pObj->m_posx += 0.01;
+		}
+		if (TGE::input::g_KeyTable[VK_LEFT]) {
+			pObj->m_posx -= 0.01;
+		}
+		if (TGE::input::g_KeyTable[VK_UP]) {
+			pObj->m_posy -= 0.01;
+		}
+		if (TGE::input::g_KeyTable[VK_DOWN]) {
+			pObj->m_posy += 0.01;
+		}
+
 
 	}
 
