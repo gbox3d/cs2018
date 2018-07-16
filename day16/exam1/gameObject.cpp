@@ -76,5 +76,48 @@ namespace cs2018prj {
 
 	}
 
+	namespace ailenObject {
+		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed,
+			tge_sprite::S_SPRITE_OBJECT *pSpr)
+		{
+			pObj->m_posx = _x;
+			pObj->m_posy = _y;
+			pObj->m_dbSpeed = _dbSpeed;
+			pObj->m_nFSM = 0;
+			pObj->m_pSprite = pSpr;
+			pObj->m_vDir = irr::core::vector2df(1, 0);
+		}
+
+		void Apply(S_GAMEOBJECT *pObj, double _deltaTick)
+		{
+			switch (pObj->m_nFSM)
+			{
+			case 0:
+				pObj->m_nFSM = 10;
+				pObj->m_dbWorkTick = 0;
+				break;
+			case 10:
+				pObj->m_posx += (pObj->m_dbSpeed * _deltaTick) * pObj->m_vDir.X;
+				pObj->m_posy += (pObj->m_dbSpeed * _deltaTick) * pObj->m_vDir.Y;
+				pObj->m_dbWorkTick += _deltaTick;
+				if (pObj->m_dbWorkTick > 3.5) {
+					//pObj->m_nFSM = 10;
+					pObj->m_vDir.rotateBy(180);
+					pObj->m_dbWorkTick = 0;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf)
+		{	
+			tge_sprite::put(pObj->m_pSprite,
+				irr::core::round32(pObj->m_posx + pObj->m_translation.X),
+				irr::core::round32(pObj->m_posy + pObj->m_translation.Y), pTargetBuf);
+		}
+	}
+
 	
 }
