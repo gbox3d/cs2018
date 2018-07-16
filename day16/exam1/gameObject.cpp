@@ -47,8 +47,6 @@ namespace cs2018prj {
 				}
 			}
 
-
-
 			switch (pObj->m_nFSM)
 			{
 			case 0: //Á¤Áö
