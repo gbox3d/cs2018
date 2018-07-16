@@ -15,6 +15,7 @@ namespace cs2018prj {
 			pObj->m_dbSpeed = _dbSpeed;
 			pObj->m_nFSM = 0;
 			pObj->m_pSprite = pSpr;
+			pObj->m_bActive = true;
 			//pObj->m_Spr = _spr;
 		}
 
@@ -56,6 +57,12 @@ namespace cs2018prj {
 				}
 			}
 			break;
+			case 100:
+				pObj->m_bActive = false;
+				pObj->m_nFSM = 101;
+				break;
+			case 101: //ko 
+				break;
 			default:
 				break;
 			}
@@ -69,9 +76,11 @@ namespace cs2018prj {
 			/*TGE::setCharacter(pTargetBuf, pObj->m_posx, pObj->m_posy,
 				pObj->m_Spr.Char.UnicodeChar,
 				pObj->m_Spr.Attributes);*/
-			tge_sprite::put(pObj->m_pSprite, 
-				irr::core::round32(pObj->m_posx + pObj->m_translation.X), 
-				irr::core::round32(pObj->m_posy + pObj->m_translation.Y), pTargetBuf);
+			if (pObj->m_bActive) {
+				tge_sprite::put(pObj->m_pSprite,
+					irr::core::round32(pObj->m_posx + pObj->m_translation.X),
+					irr::core::round32(pObj->m_posy + pObj->m_translation.Y), pTargetBuf);
+			}
 		}
 
 	}
@@ -87,6 +96,7 @@ namespace cs2018prj {
 			pObj->m_pSprite = pSpr;
 			pObj->m_vDir = irr::core::vector2df(1, 0);
 			pObj->m_pTargetObj = NULL;
+			pObj->m_pWepon = NULL;
 		}
 
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick)
@@ -110,7 +120,7 @@ namespace cs2018prj {
 					irr::core::vector2df a(pObj->m_posx, pObj->m_posy);
 					irr::core::vector2df b(pObj->m_pTargetObj->m_posx, pObj->m_pTargetObj->m_posy);
 					double fDist = a.getDistanceFrom(b);
-					if (fDist < 5) {
+					if (fDist < 10) {
 						pObj->m_nFSM = 20;
 					}
 				}
@@ -123,6 +133,18 @@ namespace cs2018prj {
 				c.normalize();
 				pObj->m_posx += c.X * pObj->m_dbSpeed * _deltaTick;
 				pObj->m_posy += c.Y * pObj->m_dbSpeed * _deltaTick;
+
+				if (a.getDistanceFrom(b) < 2.5) {
+					if (pObj->m_pWepon) {
+						cs2018prj::attackObject_claw::S_GAMEOBJECT *pWepon = 
+							(cs2018prj::attackObject_claw::S_GAMEOBJECT *)pObj->m_pWepon;
+						pWepon->m_posx = pObj->m_pTargetObj->m_posx;
+						pWepon->m_posy = pObj->m_pTargetObj->m_posy;
+						pWepon->m_nFSM = 10;
+						pObj->m_nFSM = 30;
+					}
+				}
+
 			}
 				break;
 			default:
@@ -154,6 +176,48 @@ namespace cs2018prj {
 
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick)
 		{
+			switch (pObj->m_nFSM)
+			{
+			case 0: // sleep down
+				break;
+			case 10: //wake up
+				pObj->m_dbWorkTick = 0;
+				pObj->m_bActive = true;
+				pObj->m_nFSM = 11;
+				break;
+			case 11:
+			{
+				if (pObj->m_pTargetObj) {
+					irr::core::vector2df a = irr::core::vector2df(pObj->m_posx, pObj->m_posy);
+					irr::core::vector2df b = 
+						irr::core::vector2df(pObj->m_pTargetObj->m_posx, pObj->m_pTargetObj->m_posy);
+
+					double fDist = a.getDistanceFrom(b);
+					if (fDist < 2) {
+						pObj->m_nFSM = 20;
+						pObj->m_pTargetObj->m_nFSM = 100;
+					}
+
+				}
+				pObj->m_dbWorkTick += _deltaTick;
+				if (pObj->m_dbWorkTick > 0.5) {
+					pObj->m_bActive = false;
+					pObj->m_nFSM = 0;
+				}
+			}	
+				break;
+			case 20:
+				pObj->m_dbWorkTick += _deltaTick;
+				if (pObj->m_dbWorkTick > 0.5) {
+					pObj->m_bActive = false;
+					pObj->m_nFSM = 0;
+				}
+				break;
+			case 100:
+				break;
+			default:
+				break;
+			}
 			
 		}
 

@@ -9,6 +9,7 @@ namespace cs2018prj {
 			tge_sprite::S_SPRITE_OBJECT *m_pSprite;
 			irr::core::vector2df m_translation;
 			int m_nFSM;
+			bool m_bActive;
 		};
 
 		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed, 
@@ -26,7 +27,9 @@ namespace cs2018prj {
 			irr::core::vector2df m_translation;
 			double m_dbWorkTick;
 			cs2018prj::playerObject::S_GAMEOBJECT *m_pTargetObj;
+			void *m_pWepon;
 			int m_nFSM;
+			bool m_bActive;
 		};
 
 		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed,
