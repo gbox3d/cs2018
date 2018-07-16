@@ -51,7 +51,7 @@ namespace tge_sprite {
 		TGE::putSprite(posx, posy,
 			pObj->m_header.m_cdWorkSpr.X,
 			pObj->m_header.m_cdWorkSpr.Y, TGE::g_chiBuffer, pObj->m_pSpriteBuf);
-		return 0;
+ 		return 0;
 	}
 	int put(S_SPRITE_OBJECT *pObj, int posx, int posy,CHAR_INFO *pDestScreenBuf)
 	{
@@ -72,7 +72,7 @@ namespace tge_sprite {
 		for (_desy = 0; _desy < _height; _desy++) {
 			for (_desx = 0; _desx < _width; _desx++) {
 				pObj->m_pSpriteBuf[_desx + (_desy*_width)] =
-					TGE::g_chiBuffer[(_desx + _xpos) + ((_desy + _ypos) *SCREEN_WIDTH)];
+					TGE::g_chiBuffer[(_desx + _xpos) + ((_desy + _ypos) * TGE::SCREEN_WIDTH)];
 			}
 		}
 		return 0;

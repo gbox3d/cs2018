@@ -1,10 +1,13 @@
 #pragma once
-#define SCREEN_BUF_SIZE 2000
-#define SCREEN_WIDTH 80
-#define MAX_TOKEN_SIZE 64
+//#define SCREEN_BUF_SIZE 2000
+//#define SCREEN_WIDTH 80
+//#define MAX_TOKEN_SIZE 64
 
 namespace TGE {
 
+	const int SCREEN_BUF_SIZE = 2000;
+	const int SCREEN_WIDTH = 80;
+	const int MAX_TOKEN_SIZE = 64;
 
 	void setCursor(HANDLE handle, int x, int y);
 	void clearScreenBuffer( WCHAR _wCode, WORD _wAttr);
@@ -43,6 +46,7 @@ namespace TGE {
 		void setNormalMode();
 		void setEditMode();
 	}
+	
 	void startTGE(HANDLE *phStdout);
 	void endTGE();
 	

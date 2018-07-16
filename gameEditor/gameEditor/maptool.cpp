@@ -20,7 +20,7 @@ void initMapTool(S_TGE_MAPTOOL *pObj)
 
 int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 {
-	static char szTokenBuf[8][MAX_TOKEN_SIZE];
+	static char szTokenBuf[8][TGE::MAX_TOKEN_SIZE];
 
 	//토큰처리 
 	TGE::doTokenize(szCmdBuf, szTokenBuf);
@@ -67,8 +67,10 @@ int parseCmd(S_TGE_MAPTOOL *pObj,char *szCmdBuf)
 		}
 	}
 	else if (!strcmp(szTokenBuf[0], "clear")) {
+		WCHAR _code = (WCHAR)strtol(szTokenBuf[1], NULL, 16);
+		WORD _attr = (WORD)strtol(szTokenBuf[2], NULL, 16);
 		
-		TGE::clearScreenBuffer(0x2e, 0x0007);
+		TGE::clearScreenBuffer(_code, _attr);
 	}
 	else if (!strcmp(szTokenBuf[0], "changeBrush")) {
 		WCHAR _code = (WCHAR)strtol(szTokenBuf[1], NULL, 16);

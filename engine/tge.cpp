@@ -131,7 +131,7 @@ namespace TGE {
 
 	void putSprite(int posx, int posy, int destw, int desth, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc)
 	{
-
+		/*
 		int _x;
 		int _y;
 		_x = posx; //출력 위치 
@@ -145,10 +145,26 @@ namespace TGE {
 			_i++;
 			_i %= srcw;
 		}
+		*/
+		for (int iy = 0; iy < srch; iy++) {
+			for (int ix = 0; ix < srcw; ix++) {
+				int _ix = ix + posx;
+				int _iy = iy + posy;
+				pDest[_ix + _iy * destw] = pSrc[ix + iy * srcw];
+
+			}
+
+
+		}
 	}
 	void putSprite(int posx, int posy, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc)
 	{
 		putSprite(posx, posy, SCREEN_WIDTH, 25, srcw, srch, pDest, pSrc);
+	}
+
+	void putSprite(irr::core::vector2df pos, int srcw, int srch, CHAR_INFO *pDest, CHAR_INFO *pSrc)
+	{
+		putSprite(irr::core::round32(pos.X), irr::core::round32(pos.Y), SCREEN_WIDTH, 25, srcw, srch, pDest, pSrc);
 	}
 
 	namespace input {
@@ -204,7 +220,8 @@ namespace TGE {
 	DWORD dwThreadId_ReadInput;
 	HANDLE hThread_ReadInput;
 
-	void startTGE(HANDLE *phStdout) {
+	void startTGE(HANDLE *phStdout) 
+	{
 		
 		*phStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -213,6 +230,8 @@ namespace TGE {
 		hThread_ReadInput = CreateThread(
 			NULL, 0, input::MyThreadFunction, NULL, 0, &dwThreadId_ReadInput
 		);
+
+		
 	}
 	void endTGE() {
 
