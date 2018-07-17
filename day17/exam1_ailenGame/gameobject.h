@@ -26,12 +26,14 @@ namespace cs2018prj {
 			tge_sprite::S_SPRITE_OBJECT *pSpr);
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
 		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf);
+		void Activate(S_GAMEOBJECT *pObj);
 	}
 	namespace ailenObject {
 		struct S_SUBOBJECT {};
 		void Init(S_GAMEOBJECT *pObj, irr::core::vector2df _pos, double _dbSpeed,
 			tge_sprite::S_SPRITE_OBJECT *pSpr);
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
+		void Activate(S_GAMEOBJECT *pObj);
 	}
 	namespace attackObject {
 		namespace claw {
@@ -41,8 +43,22 @@ namespace cs2018prj {
 			void Init(S_GAMEOBJECT *pObj, irr::core::vector2df _pos, double _dbSpeed,
 				tge_sprite::S_SPRITE_OBJECT *pSpr);
 			void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
+
+			void Activate(S_GAMEOBJECT *pObj);
 		}
 		
+	}
+
+
+	namespace objMng {
+		struct S_OBJECT_MNG {
+			S_GAMEOBJECT *m_pListObject[1024];
+			int m_nIndex;
+		};
+		void add(S_OBJECT_MNG *pObj,S_GAMEOBJECT *pGameObj);
+		void applyAll(S_OBJECT_MNG *pObj, double _deltaTick);
+		void renderAll(S_OBJECT_MNG *pObj, CHAR_INFO *pBuf);
+		void clearAll(S_OBJECT_MNG *pObj);
 	}
 	
 }

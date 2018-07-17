@@ -30,45 +30,56 @@ namespace cs2018prj {
 
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick)
 		{
-			if (TGE::input::g_KeyTable[VK_RIGHT]) {
-				pObj->m_vPos.X += (pObj->m_dbSpeed * _deltaTick);
-			}
-			if (TGE::input::g_KeyTable[VK_LEFT]) {
-				pObj->m_vPos.X -= (pObj->m_dbSpeed * _deltaTick);
-			}
-			if (TGE::input::g_KeyTable[VK_UP]) {
-				pObj->m_vPos.Y -= (pObj->m_dbSpeed * _deltaTick);
-			}
-			if (TGE::input::g_KeyTable[VK_DOWN]) {
-				pObj->m_vPos.Y += (pObj->m_dbSpeed * _deltaTick);
-			}
-
-			if (TGE::input::g_KeyTable['F']) {
-				if (pObj->m_pWepon) {
-					S_GAMEOBJECT *pWepon =
-						(S_GAMEOBJECT *)pObj->m_pWepon;
-					if (pWepon->m_nFSM == 0) { //슬립상태일때만...
-						pWepon->m_nFSM = 10;
-						pWepon->m_vPos.X = pObj->m_vPos.X;
-						pWepon->m_vPos.Y = pObj->m_vPos.Y - 2;
-					}
-				}
-			}
-
 			switch (pObj->m_nFSM)
 			{
-			case 0: //정지
+			case 0:
+				break;
+			case 1:
+				pObj->m_bActive = true;
+				pObj->m_nFSM = 10;
+				break;
+			case 10: //정지
+				pObj->m_nFSM++;
+				break;
+			case 11:
 				if (TGE::input::g_KeyTable[VK_SPACE]) {
-					pObj->m_nFSM = 10;
+					pObj->m_nFSM = 20;
+				}
+				{
+					if (TGE::input::g_KeyTable[VK_RIGHT]) {
+						pObj->m_vPos.X += (pObj->m_dbSpeed * _deltaTick);
+					}
+					if (TGE::input::g_KeyTable[VK_LEFT]) {
+						pObj->m_vPos.X -= (pObj->m_dbSpeed * _deltaTick);
+					}
+					if (TGE::input::g_KeyTable[VK_UP]) {
+						pObj->m_vPos.Y -= (pObj->m_dbSpeed * _deltaTick);
+					}
+					if (TGE::input::g_KeyTable[VK_DOWN]) {
+						pObj->m_vPos.Y += (pObj->m_dbSpeed * _deltaTick);
+					}
+
+					if (TGE::input::g_KeyTable['F']) {
+						if (pObj->m_pWepon) {
+							S_GAMEOBJECT *pWepon =
+								(S_GAMEOBJECT *)pObj->m_pWepon;
+							if (pWepon->m_nFSM == 0) { //슬립상태일때만...
+								pWepon->m_nFSM = 10;
+								pWepon->m_vPos.X = pObj->m_vPos.X;
+								pWepon->m_vPos.Y = pObj->m_vPos.Y - 2;
+							}
+						}
+					}
 				}
 				break;
-			case 10: //move
+			case 20: //move
 			{
+				
 				irr::core::vector2df vTarget = irr::core::vector2df(TGE::input::g_cdMousePos.X,
 					TGE::input::g_cdMousePos.Y);
 				irr::core::vector2df vDir = vTarget - pObj->m_vPos;
 				if (vDir.getLength() < 1) {
-					pObj->m_nFSM = 0; //정지상태로...
+					pObj->m_nFSM = 10; //정지상태로...
 				}
 				else {
 					vDir.normalize();
@@ -96,6 +107,11 @@ namespace cs2018prj {
 					irr::core::round32(pObj->m_vPos.X + pObj->m_translation.X),
 					irr::core::round32(pObj->m_vPos.Y + pObj->m_translation.Y), pTargetBuf);
 			}
+		}
+
+		void Activate(S_GAMEOBJECT *pObj)
+		{
+			pObj->m_nFSM = 1;
 		}
 	}
 
@@ -148,6 +164,11 @@ namespace cs2018prj {
 			}
 		}
 
+		void Activate(S_GAMEOBJECT *pObj)
+		{
+			pObj->m_nFSM = 10;
+		}
+
 		
 	}
 
@@ -198,9 +219,41 @@ namespace cs2018prj {
 				}
 
 			}
+
+			void Activate(S_GAMEOBJECT *pObj) {
+				pObj->m_nFSM = 10;
+			}
 			
 			
 		}
+	}
+
+	namespace objMng {
+		
+		void add(S_OBJECT_MNG *pObj,S_GAMEOBJECT *pGameObj) {
+			pObj->m_pListObject[pObj->m_nIndex++] = pGameObj;
+		}
+		void applyAll(S_OBJECT_MNG *pObj, double _deltaTick) {
+			for (int i = 0; i < pObj->m_nIndex; i++) {
+				pObj->m_pListObject[i]->m_fpApply(pObj->m_pListObject[i], _deltaTick);
+			}
+		}
+		void renderAll(S_OBJECT_MNG *pObj, CHAR_INFO *pBuf) {
+			for (int i = 0; i < pObj->m_nIndex; i++) {
+				pObj->m_pListObject[i]->m_fpRender(pObj->m_pListObject[i], pBuf);
+			}
+		}
+
+		void clearAll(S_OBJECT_MNG *pObj)
+		{
+			for (int i = 0; i < pObj->m_nIndex; i++) {
+				if (pObj->m_pListObject[i] != NULL) {
+					free(pObj->m_pListObject[i]);
+				}
+			}
+		}
+
+
 	}
 
 
