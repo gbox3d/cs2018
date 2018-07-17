@@ -52,27 +52,39 @@ namespace plusEngine {
 
 
 	//DWORD WINAPI ThreadFunc(LPVOID temp)
+	void(*fpOnSetup)();
 	void (*fpOnLoop)(double);
 	void(*fpOnRender)(double,Graphics*);
 
-	void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen)
+	void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen, 
+		void(*_fpOnSetup)(),
+		void(*_fpOnLoop)(double), 
+		void(*_fpOnRender)(double, Graphics*))
 	{
 		//----------------------------------------------------------------------
 		//gdi plus 초기화 코드 
 		GdiplusStartupInput gdiplusStartupInput;
 		ULONG_PTR           gdiplusToken;
-		fpOnLoop = NULL;
-		fpOnRender = NULL;
+
+		fpOnSetup = _fpOnSetup;
+		fpOnLoop = _fpOnLoop;
+		fpOnRender = _fpOnRender;
 
 		// Initialize GDI+.
 		GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 		//-----------------------------------------------------------------------
 
+		
 		{
 			bool quit = false;
 			//gdiplus 가 셧다운 되기전에 객체들이 삭제되어야 하므로 일부러 지역변수선언을 한단계 내려서 사용했다.			
 			Bitmap bmpMem(rectScreen.Width, rectScreen.Height);
-			Graphics* pBackScreen = Graphics::FromImage(&bmpMem);			
+			Graphics* pBackScreen = Graphics::FromImage(&bmpMem);	
+
+			if (fpOnSetup != NULL) {
+				fpOnSetup();
+			}
+
 
 			while (!quit) {
 
@@ -115,6 +127,11 @@ namespace plusEngine {
 		//gdi plus 종료코드 
 		GdiplusShutdown(gdiplusToken);
 		//--------------------------------------
+	}
+
+	void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen)
+	{
+		GDIPLUS_Loop(msg, rectScreen,NULL, NULL, NULL);
 	}
 		
 
