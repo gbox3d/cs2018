@@ -5,6 +5,8 @@ namespace cs2018prj {
 		double m_dbSpeed;
 		//double m_posx, m_posy;
 		irr::core::vector2df m_vPos;
+		double m_dbAngle;
+		double m_dbWorkTick;
 		void *m_pWepon;
 		tge_sprite::S_SPRITE_OBJECT *m_pSprite;
 		irr::core::vector2df m_translation;
@@ -26,32 +28,21 @@ namespace cs2018prj {
 		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf);
 	}
 	namespace ailenObject {
-		struct S_SUBOBJECT {
-			
-		};
-
-		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed,
+		struct S_SUBOBJECT {};
+		void Init(S_GAMEOBJECT *pObj, irr::core::vector2df _pos, double _dbSpeed,
 			tge_sprite::S_SPRITE_OBJECT *pSpr);
 		void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
-		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf);
 	}
-	namespace attackObject_claw {
-		struct S_SUBOBJECT {
-		};
+	namespace attackObject {
+		namespace claw {
 
-		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed,
-			tge_sprite::S_SPRITE_OBJECT *pSpr);
-		void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
-		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf);
-	}
-	namespace attackObject_frameBurster {
-		struct S_SUBOBJECT {
-		};
-
-		void Init(S_GAMEOBJECT *pObj, double _x, double _y, double _dbSpeed,
-			tge_sprite::S_SPRITE_OBJECT *pSpr);
-		void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
-		void Render(S_GAMEOBJECT *pObj, CHAR_INFO *pTargetBuf);
+		}
+		namespace fire {
+			void Init(S_GAMEOBJECT *pObj, irr::core::vector2df _pos, double _dbSpeed,
+				tge_sprite::S_SPRITE_OBJECT *pSpr);
+			void Apply(S_GAMEOBJECT *pObj, double _deltaTick);
+		}
+		
 	}
 	
 }
