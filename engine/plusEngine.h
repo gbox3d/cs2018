@@ -16,7 +16,9 @@ namespace plusEngine {
 	extern void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen,
 		void(*_fpOnSetup)(),
 		void(*_fpOnLoop)(double),
-		void(*_fpOnRender)(double, Graphics*));
+		void(*_fpOnRender)(double, Graphics*),
+		void(*_fpOnFinish)()
+	);
 	extern void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen);
 
 	namespace util {
