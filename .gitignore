@@ -3,6 +3,8 @@ Debug/
 *.exe
 .vs/
 *.db
+node_modules/
+package-lock.json
 
 
 
