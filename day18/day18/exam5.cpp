@@ -32,25 +32,29 @@ namespace exam5 {
 
 	}
 	void OnGdiPlusApply(double fDelta)
-	{
-		//fAngle += fDelta * 45;
-		//irr::core::vector2df vPos = irr::core::vector2df(0, 0);
-
+	{	
+		irr::core::vector2df _vDir = irr::core::vector2df(1, 0);
 		irr::core::vector2df vDir = vTarget - vPos;
 		vDir.normalize();
 
 		fAngle = 0 - vDir.getAngle();
-
-		vPos += vDir * (10.0 * fDelta);
-
-
+		
+		//이동
+		if (fDelta > 0.01) {
+			fDelta = 0.01;
+		}
+		_vDir.rotateBy(fAngle);
+		vPos += _vDir * (10.0 * fDelta);
 	}
+
 	void OnGdiPlusRender(double fDelta, Graphics *pGrp)
 	{
 		pGrp->Clear(Color(200, 200, 200));
 		Pen penBlack(Color(0, 0, 0));
 		pGrp->DrawLine(&penBlack, 160, 0, 160, 240);
 		pGrp->DrawLine(&penBlack, 0, 120, 320, 120);
+
+		plusEngine::printf(pGrp, 0, 0, L"%lf %lf %lf", fAngle,vPos.X,vPos.Y);
 
 		//원점 이동
 		pGrp->TranslateTransform(160, 120);
