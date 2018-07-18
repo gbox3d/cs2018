@@ -159,6 +159,8 @@
     </ClCompile>
     <ClCompile Include="day18.cpp" />
     <ClCompile Include="exam1.cpp" />
+    <ClCompile Include="exam2.cpp" />
+    <ClCompile Include="exam3.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
