@@ -6,5 +6,6 @@
     "wepon": "dagger",
     "ap" :  25
   },
-  "comm" :  true
+  "comm": true,
+  "etc" :  [4,"sword",7,3,2,9]
 }
