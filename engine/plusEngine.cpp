@@ -6,6 +6,7 @@ namespace plusEngine {
 	//gdi plus 초기화 코드 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
+	HDC hDc=NULL;
 	
 	void startUpGdiPlus()
 	{
@@ -96,17 +97,16 @@ namespace plusEngine {
 				{
 					if (msg.message == WM_QUIT)
 						quit = true;
+					
 					TranslateMessage(&msg);
 					DispatchMessage(&msg);
+					
 				}
 				else {
 					static LONG prev_tick;
 					SYSTEMTIME time;
 					GetSystemTime(&time);
 					LONG time_ms = (time.wSecond * 1000) + time.wMilliseconds;
-					// Get DC
-					HDC hdc = GetDC(msg.hwnd);
-					Graphics graphics(hdc);
 					double fDelta = (time_ms - prev_tick) / 1000.;
 
 					//로직
@@ -114,17 +114,26 @@ namespace plusEngine {
 						fpOnLoop(fDelta);
 					}
 
-					//랜더 
-					if (fpOnRender) {
-						fpOnRender(fDelta, pBackScreen);
-					}
+					if (hDc) {
+						Graphics graphics(hDc);
 
-					graphics.DrawImage(&bmpMem, rectScreen);
-					ReleaseDC(msg.hwnd, hdc);
+						//랜더 
+						if (fpOnRender) {
+							fpOnRender(fDelta, pBackScreen);
+						}
+
+						graphics.DrawImage(&bmpMem, rectScreen);
+
+					}
+					
+					
+					
 
 					prev_tick = time_ms;
 				}
 			}
+			
+			if(hDc) ReleaseDC(msg.hwnd, hDc);
 
 			if (fpOnFinish) {
 				fpOnFinish();
@@ -140,6 +149,10 @@ namespace plusEngine {
 	void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen)
 	{
 		GDIPLUS_Loop(msg, rectScreen,NULL, NULL, NULL,NULL);
+	}
+
+	void updateDC(HWND hWnd) {
+		hDc = GetDC(hWnd);
 	}
 		
 

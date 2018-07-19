@@ -20,6 +20,7 @@ namespace plusEngine {
 		void(*_fpOnFinish)()
 	);
 	extern void GDIPLUS_Loop(MSG &msg, Gdiplus::Rect rectScreen);
+	extern void updateDC(HWND hWnd);
 
 	namespace util {
 
