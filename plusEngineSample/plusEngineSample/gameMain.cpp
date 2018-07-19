@@ -2,6 +2,21 @@
 #include "gameMain.h"
 
 Image *g_pImage;
+
+BYTE g_KeyTable[1024] = {0};
+double fAngle = 0;
+void OnKeyDown(WORD wKeycode)
+{
+	g_KeyTable[wKeycode] = 1;
+
+}
+
+void OnKeyUp(WORD wKeycode)
+{
+	g_KeyTable[wKeycode] = 0;
+
+}
+
 void OnGdiplusSetup()
 {
 	//Image _tmp(L"../../pub_res/ww2/Fighters/p38g.png");
@@ -13,6 +28,11 @@ void OnGdiplusFinish()
 {
 	delete g_pImage;
 
+}
+
+void OnGdiplusApply(double fDelta)
+{
+	fAngle += fDelta * 45;
 }
 
 
@@ -31,7 +51,22 @@ void OnGdiplusRender(double fDelta, Graphics *pGrp)
 
 	pGrp->TranslateTransform(160, 120);
 
-	pGrp->DrawImage(g_pImage, 0, 0);
+	
+	{
+		Matrix _tmp;
+		pGrp->GetTransform(&_tmp);
+
+		pGrp->RotateTransform(fAngle);
+		irr::core::vector2df _pos(0 - g_pImage->GetWidth() / 2.0, 0 - g_pImage->GetHeight() / 2.0);
+		pGrp->TranslateTransform(_pos.X, _pos.Y);
+		pGrp->DrawImage(g_pImage,
+			Rect(0, 0, g_pImage->GetWidth(), g_pImage->GetHeight()),
+			0, 0, g_pImage->GetWidth(), g_pImage->GetHeight(), UnitPixel);
+
+		pGrp->SetTransform(&_tmp);
+
+	}
+	
 
 	pGrp->ResetTransform();
 
