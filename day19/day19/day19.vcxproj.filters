@@ -41,8 +41,13 @@
     <ClCompile Include="exam2_cjson_write.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="exam3_udp1.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.json" />
+    <None Include="httpsrv.js" />
+    <None Include="udp_exam1.js" />
   </ItemGroup>
 </Project>
