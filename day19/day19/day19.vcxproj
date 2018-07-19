@@ -157,6 +157,8 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="day19.cpp" />
+    <ClCompile Include="exam1_cjson_read.cpp" />
+    <ClCompile Include="exam2_cjson_write.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
