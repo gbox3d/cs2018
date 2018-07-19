@@ -161,6 +161,7 @@
     <ClCompile Include="exam1_cjson_read.cpp" />
     <ClCompile Include="exam2_cjson_write.cpp" />
     <ClCompile Include="exam3_udp1.cpp" />
+    <ClCompile Include="exam5_udp2.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

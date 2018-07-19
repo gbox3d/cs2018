@@ -4,8 +4,8 @@ var host = {
 }
 
 var remote = {
-    address: "14.55.207.235",
-    port : 3333
+    address: "14.55.207.250",
+    port : 13333
 }
 
 var dgram = require("dgram");
