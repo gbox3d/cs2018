@@ -1,0 +1,10 @@
+{
+  "name": "lee seok jun",
+  "distance": 29.7,
+  "national_code": 82,
+  "item" : {
+    "wepon": "dagger",
+    "ap" :  25
+  },
+  "comm" :  true
+}
